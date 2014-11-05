@@ -135,7 +135,6 @@ class ErosSpider(CrawlSpider):
         item['image_urls'] = image_urls
         item['images'] = []
 
-        print item
         return item
 
     def parse_vip_item(self, response):
@@ -190,5 +189,4 @@ class ErosSpider(CrawlSpider):
         item['image_urls'] = image_urls
         item['images'] = []
 
-        print item
         return item
