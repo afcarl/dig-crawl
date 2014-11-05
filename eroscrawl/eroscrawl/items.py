@@ -68,3 +68,6 @@ class EroscrawlItem(scrapy.Item):
 
     image_urls = scrapy.Field()
     images = scrapy.Field()
+
+    body = scrapy.Field()
+
