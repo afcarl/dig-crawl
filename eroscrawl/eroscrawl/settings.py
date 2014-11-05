@@ -19,8 +19,12 @@ NEWSPIDER_MODULE = 'eroscrawl.spiders'
 # 13 October 2014
 DOWNLOAD_DELAY = 1.0
 
+# 5 November 2014
+LOG_LEVEL = 'INFO'
+
+# data dir
 try:
-    import sys, os, datetime, errno
+    import sys, os, datetime, errno, time
     today = datetime.datetime.utcnow().strftime("%Y%m%d")
     datadir = None
     # ACCUM is the root directory
@@ -60,6 +64,37 @@ IMAGES_STORE = images_store
 FEED_URI = feed_uri
 FEED_FORMAT = "jsonlines"
 
+# log dir
+try:
+    import sys, os, datetime, errno, time
+    today = datetime.datetime.utcnow().strftime("%Y%m%d")
+    logdir = None
+    # ACCUM is the root directory
+    try:
+        accum = os.environ["ACCUM"]
+    except:
+        accum = "/lfs1/users/wat"
+    logdir = os.path.join(accum, "log/escort/%s/www.eros.com/" % today)
+    # ensure log directory exists
+    try:
+        os.makedirs(logdir)
+    except OSError as exception:
+        if exception.errno != errno.EEXIST:
+            raise
+    logfile = os.path.join(logdir, "log")
+    # if logfile already exists, try to rename
+    try: 
+        os.rename(logfile, "%s.%s" % (logfile, time.time()))
+    except:
+        # if possible
+        pass
+except Exception as e:
+    print >> sys.stderr, "Failed to configure log dir %r [%r]" % (logdir, e)
+
+LOG_FILE = logfile
+
+# dump all to stdout/log?
 import sys
 print >> sys.stderr, "SETTINGS: Feed URI %r" % FEED_URI
 print >> sys.stderr, "SETTINGS: Images store %r" % IMAGES_STORE
+print >> sys.stderr, "SETTINGS: Log file %r" % LOG_FILE
